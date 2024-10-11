@@ -12,19 +12,33 @@
     
 import sys
 from time import time
-sys.path.append("../tools/")
-from email_preprocess import preprocess
+import os
 
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(("./tools/")))
+from tools.email_preprocess import preprocess
 ### features_train and features_test are the features for the training
 ### and testing datasets, respectively
 ### labels_train and labels_test are the corresponding item labels
+# features_train, features_test, labels_train, labels_test = preprocess(
+#     words_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', "/tools/word_data.pkl")), 
+#     authors_file= os.path.abspath(os.path.join(os.path.dirname(__file__), '..', "/tools/email_authors.pkl")) 
+# )
 features_train, features_test, labels_train, labels_test = preprocess()
-
 
 ##############################################################
 # Enter Your Code Here
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
 
+clf = GaussianNB
+
+clf.fit(features_train, labels_train)
+labels_pred = clf.predict(features_test)
+
+accuracy = accuracy_score(labels_test, labels_pred)
+print(accuracy)
 
 
 ##############################################################
